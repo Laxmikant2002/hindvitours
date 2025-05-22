@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { handleBookNow } from '../lib/navigation';
 import { 
   FaBars, 
   FaTimes, 
@@ -18,6 +19,7 @@ import Logo from './Logo';
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
@@ -53,6 +55,12 @@ export default function Header() {
     setIsLoggedIn(false);
     setUserProfile(null);
     setIsMenuOpen(false);
+  };
+
+  // Handle book now button click
+  const onBookNowClick = () => {
+    handleBookNow(router);
+    setIsMenuOpen(false); // Close mobile menu if open
   };
 
   return (
@@ -101,17 +109,18 @@ export default function Header() {
               className={`border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${
                 isActive('/routes') ? 'border-indigo-500 text-gray-900' : ''
               }`}
+              prefetch={true}
             >
               Routes
             </Link>
-            <Link
-              href="/booking"
+            <button
+              onClick={onBookNowClick}
               className={`border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${
                 isActive('/booking') ? 'border-indigo-500 text-gray-900' : ''
               }`}
             >
               Book Now
-            </Link>
+            </button>
             <Link
               href="/about"
               className={`border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${
@@ -197,15 +206,14 @@ export default function Header() {
           >
             Routes
           </Link>
-          <Link
-            href="/booking"
-            className={`block px-3 py-2 rounded-md text-base font-medium ${
+          <button
+            onClick={onBookNowClick}
+            className={`w-full text-left px-3 py-2 rounded-md text-base font-medium ${
               isActive('/booking') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
             }`}
-            onClick={() => setIsMenuOpen(false)}
           >
             Book Now
-          </Link>
+          </button>
           <Link
             href="/about"
             className={`block px-3 py-2 rounded-md text-base font-medium ${

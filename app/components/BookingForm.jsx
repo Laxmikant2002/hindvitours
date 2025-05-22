@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 
-export default function BookingForm() {
+export default function BookingForm({ selectedRoute }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    route: '',
+    route: selectedRoute ? selectedRoute.id : '',
     date: '',
     passengers: '1',
     specialRequirements: ''
@@ -80,11 +80,13 @@ export default function BookingForm() {
             onChange={handleChange}
             required
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Select a route</option>
-            <option value="delhi-agra">Delhi - Agra</option>
-            <option value="mumbai-goa">Mumbai - Goa</option>
-            <option value="jaipur-udaipur">Jaipur - Udaipur</option>
+          >            <option value="">Select a route</option>
+            <option value="delhi-agra">Delhi to Agra Tour</option>
+            <option value="mumbai-goa">Mumbai to Goa Coastal Route</option>
+            <option value="jaipur-udaipur">Royal Rajasthan Tour</option>
+            <option value="manali-leh">Himalayan Adventure</option>
+            <option value="kerala-backwaters">Kerala Backwaters Tour</option>
+            <option value="varanasi-spiritual">Spiritual Varanasi Tour</option>
           </select>
         </div>
 
