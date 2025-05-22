@@ -44,18 +44,18 @@ const stepVariants = {
 };
 
 const HowItWorks = () => (
-  <section className="relative py-16 bg-gradient-to-b from-white to-indigo-50 overflow-hidden">
+  <section className="relative py-8 bg-gradient-to-b from-white to-indigo-50 overflow-hidden">
     <div className="container mx-auto px-6 sm:px-8 relative z-10">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
-        className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-8"
+        className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-6"
       >
         How It Works
       </motion.h2>
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"

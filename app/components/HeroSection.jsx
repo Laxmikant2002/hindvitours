@@ -52,27 +52,23 @@ const HeroSection = () => {
     }
   }, [isPaused]);
 
-  return (
-    <section className="relative min-h-[90vh] overflow-hidden">
+  return (    <section className="relative min-h-[85vh] overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/20 backdrop-blur-sm"></div>
-      </div>
-
-      <div className="container mx-auto px-6 py-12 sm:py-20 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      </div>      <div className="container mx-auto px-6 py-8 sm:py-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
-          >
-            <motion.span
+          >            <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-indigo-600 font-semibold text-lg sm:text-xl mb-4 block tracking-wide"
+              className="text-indigo-600 font-semibold text-lg sm:text-xl mb-3 block tracking-wide"
             >
               Discover India With Us
             </motion.span>
@@ -80,8 +76,7 @@ const HeroSection = () => {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight"
+              transition={{ delay: 0.4 }}              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 tracking-tight"
             >
               Experience the Magic of
               <span className="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">

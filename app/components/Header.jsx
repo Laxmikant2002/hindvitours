@@ -3,8 +3,18 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { FaBars, FaTimes, FaUserCircle, FaSignOutAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import Image from 'next/image';
+import { 
+  FaBars, 
+  FaTimes, 
+  FaUserCircle, 
+  FaSignOutAlt, 
+  FaPhone, 
+  FaEnvelope,
+  FaLandmark,
+  FaUmbrellaBeach,
+  FaPalace
+} from 'react-icons/fa';
+import Logo from './Logo';
 
 export default function Header() {
   const pathname = usePathname();
@@ -71,15 +81,8 @@ export default function Header() {
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <Image 
-                src="/logo.png" 
-                alt="HindviTours Logo" 
-                width={40} 
-                height={40}
-                className="w-auto h-8"
-              />
-              <span className="text-xl font-bold text-indigo-600">HindviTours</span>
+            <Link href="/" className="flex items-center">
+              <Logo />
             </Link>
           </div>
 
@@ -260,4 +263,4 @@ export default function Header() {
       </div>
     </header>
   );
-} 
+}

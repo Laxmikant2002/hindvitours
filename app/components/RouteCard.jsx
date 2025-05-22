@@ -1,77 +1,110 @@
 'use client';
 
-import Image from 'next/image';
+import React from 'react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { 
+  FaMonument, 
+  FaUmbrellaBeach, 
+  FaCity, 
+  FaMapMarkerAlt, 
+  FaClock, 
+  FaRupeeSign,
+  FaMountain,
+  FaWater,
+  FaPrayingHands
+} from 'react-icons/fa';
 
-export default function RouteCard({ route }) {
-  const {
-    id,
-    title,
-    description,
-    image,
-    duration,
-    price,
-    startLocation,
-    endLocation,
-    highlights
-  } = route;
+const getRouteIcon = (id) => {
+  switch (id) {
+    case 'delhi-agra':
+      return <FaMonument className="w-12 h-12" />;
+    case 'mumbai-goa':
+      return <FaUmbrellaBeach className="w-12 h-12" />;
+    case 'jaipur-udaipur':
+      return <FaCity className="w-12 h-12" />;
+    case 'manali-leh':
+      return <FaMountain className="w-12 h-12" />;
+    case 'kerala-backwaters':
+      return <FaWater className="w-12 h-12" />;
+    case 'varanasi-spiritual':
+      return <FaPrayingHands className="w-12 h-12" />;
+    default:
+      return <FaMapMarkerAlt className="w-12 h-12" />;
+  }
+};
 
+const getGradient = (id) => {
+  switch (id) {
+    case 'delhi-agra':
+      return 'from-red-500 to-orange-500';
+    case 'mumbai-goa':
+      return 'from-blue-500 to-teal-500';
+    case 'jaipur-udaipur':
+      return 'from-purple-500 to-pink-500';
+    default:
+      return 'from-indigo-500 to-purple-500';
+  }
+};
+
+const RouteCard = ({ route }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="relative h-48">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          style={{ objectFit: 'cover' }}
-          className="transition-transform hover:scale-105"
+    <motion.div
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+    >
+      <div className={`h-48 bg-gradient-to-r ${getGradient(route.id)} relative p-6 flex items-center justify-center`}>
+        <div className="text-white transform hover:scale-110 transition-transform duration-300">
+          {getRouteIcon(route.id)}
+        </div>
+        <motion.div
+          initial={false}
+          className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"
+          whileHover={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
         />
       </div>
-      
+
       <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2">{title}</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">{route.title}</h3>
+        <p className="text-gray-600 text-sm mb-4">{route.description}</p>
         
-        <div className="flex items-center text-gray-600 mb-4">
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>{duration}</span>
-        </div>
-
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center text-gray-600">
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span>{startLocation} to {endLocation}</span>
+        <div className="space-y-3">
+          <div className="flex items-center text-sm text-gray-500">
+            <FaClock className="w-4 h-4 mr-2" />
+            <span>{route.duration}</span>
           </div>
-          
-          <div className="text-xl font-bold text-blue-600">
-            ₹{price}
+          <div className="flex items-center text-sm text-gray-500">
+            <FaMapMarkerAlt className="w-4 h-4 mr-2" />
+            <span>{route.startLocation} → {route.endLocation}</span>
+          </div>
+          <div className="flex items-center text-sm font-semibold text-indigo-600">
+            <FaRupeeSign className="w-4 h-4 mr-1" />
+            <span>{route.price}</span>
           </div>
         </div>
 
-        <p className="text-gray-600 mb-4">{description}</p>
+        <div className="mt-4 space-y-2">
+          <h4 className="font-semibold text-gray-900">Highlights:</h4>
+          <ul className="text-sm text-gray-600 space-y-1">
+            {route.highlights.map((highlight, index) => (
+              <li key={index} className="flex items-center">
+                <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full mr-2" />
+                {highlight}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-        {highlights && (
-          <div className="mb-4">
-            <h4 className="font-semibold mb-2">Highlights:</h4>
-            <ul className="list-disc list-inside text-gray-600">
-              {highlights.map((highlight, index) => (
-                <li key={index}>{highlight}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <Link
-          href={`/booking?route=${id}`}
-          className="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+        <Link 
+          href={`/booking?route=${route.id}`}
+          className="mt-6 block text-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
         >
           Book Now
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
-} 
+};
+
+export default RouteCard;

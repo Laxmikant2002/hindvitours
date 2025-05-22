@@ -149,21 +149,21 @@ export default function Home() {
       <HowItWorks />
 
       {/* Features Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className="py-8 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-6"
           >
-            <h2 className="text-3xl font-bold mb-4">Why Choose HindviTours</h2>
+            <h2 className="text-3xl font-bold text-black mb-4">Why Choose HindviTours</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Experience India like never before with our premium travel services
             </p>
           </motion.div>
           
-          <div className="relative h-96">
+          <div className="relative h-80">
             {features.map((feature, index) => (
               <FeatureCard
                 key={feature.title}
@@ -176,13 +176,13 @@ export default function Home() {
       </section>
 
       {/* Featured Routes Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-white to-gray-50">
+      <section className="py-8 px-4 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl font-bold text-center mb-12"
+            className="text-3xl font-bold text-black text-center mb-12"
           >
             Popular Routes
           </motion.h2>
