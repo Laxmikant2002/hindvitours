@@ -1,8 +1,11 @@
-# HindviTours - Discover India's Beauty
+# 🌟 HindviTours - Discover India's Beauty
+
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black.svg?style=for-the-badge&logo=vercel)](https://hindvitours-6g9homvg9-laxmikant2002s-projects.vercel.app)
+[![Made with Next.js](https://img.shields.io/badge/Made%20with-Next.js-000.svg?style=for-the-badge&logo=next.js)](https://nextjs.org)
 
 HindviTours is a modern travel booking platform designed to showcase the diverse beauty of India. Built with Next.js and featuring a beautiful, accessible UI, our platform makes it easy for travelers to discover and book incredible journeys across India.
 
-## Features
+## ✨ Features
 
 - **Curated Tour Routes**: Carefully selected travel routes covering India's most beautiful destinations
 - **Interactive Booking System**: Easy-to-use booking interface with real-time availability
@@ -56,14 +59,37 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 app/
-├── components/     # Reusable UI components
-├── pages/         # Application pages/routes
-├── styles/        # Global styles and theme
-└── public/        # Static assets
+├── components/    # Reusable UI components
+│   ├── BookingForm.jsx
+│   ├── HeroSection.jsx
+│   ├── RouteCard.jsx
+│   └── ...
+├── pages/        # Application routes
+│   ├── about.jsx
+│   ├── booking.jsx
+│   ├── routes_page.jsx
+│   └── ...
+├── styles/       # Global styles and theme
+│   └── theme.js
+└── public/       # Static assets
+    └── images/
+
+server/           # Backend server configuration
+├── server.js     # Express server setup
+└── ...
+```
+
+### 🔗 Deployment Status
+
+```bash
+🔗  Linked to laxmikant2002s-projects/hindvitours (created .vercel and added it to .gitignore)
+🔍  Inspect: https://vercel.com/laxmikant2002s-projects/hindvitours/Fq3QJVDmGednbGziQmWcZHDkmXmM [4s]      
+✅  Production: https://hindvitours-6g9homvg9-laxmikant2002s-projects.vercel.app [4s]
+📝  Deployed to production. Run `vercel --prod` to overwrite later (https://vercel.link/2F).
 ```
 
 ## Key Components
@@ -78,11 +104,37 @@ app/
 
 We welcome contributions! Please read our contributing guidelines before submitting pull requests.
 
-## License
+## 🚀 Deployment
 
-[Add your license information]
+The project is deployed on Vercel. You can view the live site at:
+- **Production**: [https://hindvitours-6g9homvg9-laxmikant2002s-projects.vercel.app](https://hindvitours-6g9homvg9-laxmikant2002s-projects.vercel.app)
+- **Inspect**: [https://vercel.com/laxmikant2002s-projects/hindvitours/Fq3QJVDmGednbGziQmWcZHDkmXmM](https://vercel.com/laxmikant2002s-projects/hindvitours/Fq3QJVDmGednbGziQmWcZHDkmXmM)
 
-## Contact
+### Deployment Commands
+
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy to development
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+Note: The `.vercel` directory is automatically added to `.gitignore` for secure deployment.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 📬 Contact
 
 For any queries regarding HindviTours, please contact:
-[Add your contact information]
+- **Email**: [your.email@example.com](mailto:your.email@example.com)
+- **Website**: [https://hindvitours-6g9homvg9-laxmikant2002s-projects.vercel.app](https://hindvitours-6g9homvg9-laxmikant2002s-projects.vercel.app)
+- **GitHub**: [@laxmikant2002s-projects](https://github.com/laxmikant2002s-projects)
