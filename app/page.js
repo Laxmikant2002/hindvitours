@@ -1,7 +1,41 @@
-import Image from "next/image";
+'use client';
+
+import React, { useEffect, useState, useMemo } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
+import { FaPlane, FaHotel, FaRoute, FaMapMarkedAlt, FaPassport, FaUserFriends } from 'react-icons/fa';
+
+// Import components
+import HeroSection from './components/HeroSection';
+import HowItWorks from './components/HowItWorks';
+import LoadingSpinner from './components/LoadingSpinner';
 import RouteCard from './components/RouteCard';
 
+// Feature Card Component
+const FeatureCard = React.memo(({ feature, isActive }) => (
+  <motion.div
+    key={feature.title}
+    initial={{ opacity: 0 }}
+    animate={{ 
+      opacity: isActive ? 1 : 0,
+      scale: isActive ? 1 : 0.9,
+      y: isActive ? 0 : 20
+    }}
+    transition={{ duration: 0.5 }}
+    className="absolute inset-0 text-center"
+  >
+    <div className="flex justify-center mb-6">
+      <div className="text-indigo-600 text-4xl">
+        {feature.icon}
+      </div>
+    </div>
+    <h3 className="text-2xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+    <p className="text-gray-600 max-w-md mx-auto">{feature.description}</p>
+  </motion.div>
+));
+
+// Featured Routes data
 const featuredRoutes = [
   {
     id: 'delhi-agra',
@@ -54,108 +88,142 @@ const featuredRoutes = [
 ];
 
 export default function Home() {
-  return (
-    <main>
-      {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero-bg.jpg"
-            alt="Indian Tourism"
-            fill
-            style={{ objectFit: 'cover' }}
-            priority
-          />
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-        </div>
-        
-        <div className="relative z-10 text-center text-white px-4">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Discover India's Beauty
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-            Experience the rich culture, stunning landscapes, and unforgettable journeys across India
-          </p>
-          <Link
-            href="/routes"
-            className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-semibold hover:bg-blue-700 transition-colors"
-          >
-            Explore Routes
-          </Link>
-        </div>
-      </section>
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeFeature, setActiveFeature] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
-      {/* Featured Routes Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Popular Routes</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredRoutes.map(route => (
-              <RouteCard key={route.id} route={route} />
+  // Features data
+  const features = useMemo(() => [
+    {
+      title: 'Curated Tours',
+      description: 'Hand-picked destinations and expertly crafted itineraries for unforgettable experiences.',
+      icon: <FaRoute />
+    },
+    {
+      title: 'Luxury Stays',
+      description: 'Premium accommodations at carefully selected hotels and resorts across India.',
+      icon: <FaHotel />
+    },
+    {
+      title: 'Expert Guides',
+      description: 'Local guides who bring history and culture to life with their deep knowledge.',
+      icon: <FaMapMarkedAlt />
+    },
+    {
+      title: 'Easy Travel',
+      description: 'Hassle-free bookings with all transportation and accommodations arranged.',
+      icon: <FaPlane />
+    }
+  ], []);
+
+  useEffect(() => {
+    // Simulate loading state
+    setTimeout(() => setIsLoading(false), 1500);
+  }, []);
+
+  // Auto-advance features
+  useEffect(() => {
+    if (isPaused) return;
+    
+    const interval = setInterval(() => {
+      setActiveFeature((prev) => (prev + 1) % features.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [features.length, isPaused]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <LoadingSpinner size="lg" color="indigo" text="Loading amazing experiences..." />
+      </div>
+    );
+  }
+
+  return (
+    <main className="min-h-screen">
+      {/* Hero Section */}
+      <HeroSection />
+
+      {/* How It Works */}
+      <HowItWorks />
+
+      {/* Features Section */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-bold mb-4">Why Choose HindviTours</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Experience India like never before with our premium travel services
+            </p>
+          </motion.div>
+          
+          <div className="relative h-96">
+            {features.map((feature, index) => (
+              <FeatureCard
+                key={feature.title}
+                feature={feature}
+                isActive={activeFeature === index}
+              />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 px-4">
+      {/* Featured Routes Section */}
+      <section className="py-16 px-4 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="w-16 h-16 mx-auto mb-4 text-blue-600">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Trusted Service</h3>
-              <p className="text-gray-600">
-                Over 10,000 satisfied customers and counting. Your safety and comfort are our top priorities.
-              </p>
-            </div>
-
-            <div className="text-center p-6">
-              <div className="w-16 h-16 mx-auto mb-4 text-blue-600">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Best Prices</h3>
-              <p className="text-gray-600">
-                Competitive prices with no hidden charges. Get the best value for your money.
-              </p>
-            </div>
-
-            <div className="text-center p-6">
-              <div className="w-16 h-16 mx-auto mb-4 text-blue-600">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Instant Booking</h3>
-              <p className="text-gray-600">
-                Easy and instant booking process. Secure your journey in minutes.
-              </p>
-            </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-center mb-12"
+          >
+            Popular Routes
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredRoutes.map((route, index) => (
+              <motion.div
+                key={route.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+              >
+                <RouteCard route={route} />
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Start Your Journey?</h2>
-          <p className="text-xl mb-8">
-            Book your next adventure with us and create memories that last a lifetime.
+      {/* Call to Action */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="py-20 bg-indigo-600 text-white text-center"
+      >
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
+          <p className="mb-8 text-lg text-indigo-100">
+            Book your dream Indian tour today and create memories that last a lifetime
           </p>
           <Link
             href="/booking"
-            className="inline-block bg-white text-blue-600 px-8 py-3 rounded-md text-lg font-semibold hover:bg-gray-100 transition-colors"
+            className="inline-block bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-indigo-50 transition-colors"
           >
             Book Now
           </Link>
         </div>
-      </section>
+      </motion.section>
     </main>
   );
 }
+
+FeatureCard.displayName = 'FeatureCard';
