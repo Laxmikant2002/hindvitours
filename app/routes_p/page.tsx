@@ -10,7 +10,8 @@ const routes = [
     startLocation: "Delhi",
     endLocation: "Jaipur",
     price: 35000,
-    highlights: ["Taj Mahal", "Amber Fort", "Qutub Minar"]
+    highlights: ["Taj Mahal", "Amber Fort", "Qutub Minar"],
+    icon: undefined // Add a placeholder or use getRouteIcon in RouteCard
   },
   {
     id: "2",
@@ -20,7 +21,8 @@ const routes = [
     startLocation: "Kochi",
     endLocation: "Alleppey",
     price: 28000,
-    highlights: ["Houseboat Stay", "Spice Plantations", "Beaches"]
+    highlights: ["Houseboat Stay", "Spice Plantations", "Beaches"],
+    icon: undefined
   },
   {
     id: "3",
@@ -30,7 +32,8 @@ const routes = [
     startLocation: "Udaipur",
     endLocation: "Jodhpur",
     price: 42000,
-    highlights: ["Lake Palace", "Desert Safari", "Mehrangarh Fort"]
+    highlights: ["Lake Palace", "Desert Safari", "Mehrangarh Fort"],
+    icon: undefined
   },
   {
     id: "4",
@@ -40,7 +43,8 @@ const routes = [
     startLocation: "Delhi",
     endLocation: "Rishikesh",
     price: 45000,
-    highlights: ["River Rafting", "Yoga Sessions", "Temple Visits"]
+    highlights: ["River Rafting", "Yoga Sessions", "Temple Visits"],
+    icon: undefined
   },
   {
     id: "5",
@@ -50,7 +54,8 @@ const routes = [
     startLocation: "Panjim",
     endLocation: "Panjim",
     price: 25000,
-    highlights: ["Beach Activities", "Water Sports", "Portuguese Heritage"]
+    highlights: ["Beach Activities", "Water Sports", "Portuguese Heritage"],
+    icon: undefined
   }
 ];
 
@@ -71,4 +76,4 @@ export default function RoutesPage() {
       </div>
     </PageTransition>
   );
-} 
+}

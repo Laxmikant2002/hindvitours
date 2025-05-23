@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FaCar, FaCarSide, FaStar, FaClock, FaRupeeSign, 
-         FaUserFriends, FaSuitcase, FaAirConditioner } from 'react-icons/fa';
+         FaUserFriends, FaSuitcase } from 'react-icons/fa';
 import PageLayout from '../components/ui/PageLayout';
 
 interface VehicleType {
@@ -98,7 +98,7 @@ const itemVariants = {
   }
 };
 
-export default function Routes() {
+function RoutesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'economy' | 'premium' | 'luxury'>('all');
@@ -271,4 +271,12 @@ export default function Routes() {
       </motion.div>
     </PageLayout>
   );
-} 
+}
+
+export default function Routes() {
+  return (
+    <Suspense fallback={null}>
+      <RoutesContent />
+    </Suspense>
+  );
+}

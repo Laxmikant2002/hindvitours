@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FaStar, FaReceipt, FaHome, FaDownload, FaShare, 
@@ -40,7 +40,7 @@ const itemVariants = {
   }
 };
 
-export default function RideComplete() {
+function RideCompleteContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [rating, setRating] = useState(0);
@@ -238,4 +238,12 @@ export default function RideComplete() {
       </motion.div>
     </PageLayout>
   );
-} 
+}
+
+export default function RideComplete() {
+  return (
+    <Suspense fallback={null}>
+      <RideCompleteContent />
+    </Suspense>
+  );
+}

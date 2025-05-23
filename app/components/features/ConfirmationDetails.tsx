@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaQrcode, FaShareAlt } from 'react-icons/fa';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 
 export type BookingDetails = {
   bookingId: string;
@@ -119,7 +119,7 @@ export default function ConfirmationDetails({ booking }: ConfirmationDetailsProp
           animate={{ opacity: 1, scale: 1 }}
           className="flex justify-center p-4 bg-gray-50 rounded-xl"
         >
-          <QRCode
+          <QRCodeCanvas
             value={`${window.location.origin}/booking/${booking.bookingId}`}
             size={200}
             level="H"
@@ -169,4 +169,4 @@ export default function ConfirmationDetails({ booking }: ConfirmationDetailsProp
       )}
     </div>
   );
-} 
+}
