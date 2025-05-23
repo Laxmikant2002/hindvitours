@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
 import PageLayout from '../components/ui/PageLayout';
-import { FaHeart, FaShieldAlt, FaUserFriends, FaGlobe } from 'react-icons/fa';
+import { FaHeart, FaShieldAlt, FaUserFriends, FaGlobe, FaPhoneAlt, FaMapMarkedAlt } from 'react-icons/fa';
 
 interface TeamMember {
   name: string;
@@ -67,6 +69,24 @@ const values: Value[] = [
   }
 ];
 
+const culturalLandmarks = [
+  {
+    name: 'Taj Mahal',
+    location: 'Agra',
+    image: '/landmarks/taj-mahal.jpg'
+  },
+  {
+    name: 'Hawa Mahal',
+    location: 'Jaipur',
+    image: '/landmarks/hawa-mahal.jpg'
+  },
+  {
+    name: 'Gateway of India',
+    location: 'Mumbai',
+    image: '/landmarks/gateway.jpg'
+  }
+];
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -92,7 +112,7 @@ const itemVariants = {
 export default function AboutPage() {
   return (
     <PageLayout>
-      <main className="py-12">
+      <main className="py-12 bg-gradient-to-b from-purple-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -108,16 +128,55 @@ export default function AboutPage() {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className="mb-24"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {culturalLandmarks.map((landmark) => (
+                <div key={landmark.name} className="relative h-64 rounded-2xl overflow-hidden group">
+                  <Image
+                    src={landmark.image}
+                    alt={landmark.name}
+                    fill
+                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+                    <div className="absolute bottom-0 left-0 p-6 text-white">
+                      <h3 className="text-xl font-semibold">{landmark.name}</h3>
+                      <p className="text-sm opacity-90">{landmark.location}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.section>
+
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             className="relative mb-24 overflow-hidden"
           >
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-1">
+            <div className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl p-1">
               <div className="bg-white rounded-3xl p-8 sm:p-12">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
-                <p className="text-gray-600 text-lg leading-relaxed">
-                  HindviTours was founded with a passion for showcasing the rich cultural heritage and natural beauty of India. 
-                  Our journey began with a simple mission: to make Indian tourism accessible, comfortable, and memorable for everyone.
-                  Today, we continue to innovate and enhance the travel experience while staying true to our core values.
-                </p>
+                <div className="flex flex-col md:flex-row gap-8 items-center">
+                  <div className="flex-1">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
+                    <p className="text-gray-600 text-lg leading-relaxed">
+                      HindviTours was founded with a passion for showcasing the rich cultural heritage and natural beauty of India. 
+                      Our journey began with a simple mission: to make Indian tourism accessible, comfortable, and memorable for everyone.
+                      Today, we continue to innovate and enhance the travel experience while staying true to our core values.
+                    </p>
+                  </div>
+                  <div className="flex-1">
+                    <div className="relative h-64 rounded-2xl overflow-hidden">
+                      <Image
+                        src="/about/story-image.jpg"
+                        alt="Our Journey"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.section>
@@ -195,17 +254,27 @@ export default function AboutPage() {
             animate={{ opacity: 1 }}
             className="text-center"
           >
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-3xl p-12">
+            <div className="bg-gradient-to-r from-indigo-500/90 to-purple-500/90 text-white rounded-3xl p-12">
               <h2 className="text-3xl font-bold mb-6">Ready to Experience India?</h2>
               <p className="text-xl mb-8 opacity-90">
                 Join us on a journey through the incredible diversity of India.
               </p>
-              <button
-                onClick={() => window.location.href = '/routes'}
-                className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors"
-              >
-                Explore Our Tours
-              </button>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link
+                  href="/routes"
+                  className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors inline-flex items-center justify-center gap-2"
+                >
+                  <FaMapMarkedAlt />
+                  Explore Our Tours
+                </Link>
+                <Link
+                  href="/support"
+                  className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition-colors inline-flex items-center justify-center gap-2"
+                >
+                  <FaPhoneAlt />
+                  Contact Us
+                </Link>
+              </div>
             </div>
           </motion.section>
         </div>

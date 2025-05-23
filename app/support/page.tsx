@@ -1,75 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { FaHeadset, FaQuestionCircle, FaEnvelope, FaPhone } from 'react-icons/fa';
 import PageLayout from '../components/ui/PageLayout';
-import { 
-  FaQuestionCircle, 
-  FaEnvelope, 
-  FaPhone, 
-  FaWhatsapp, 
-  FaClock,
-  FaPlane,
-  FaCreditCard,
-  FaUserFriends,
-  FaMapMarkedAlt,
-  FaCalendarAlt,
-  FaLock,
-  FaShieldAlt
-} from 'react-icons/fa';
-import SupportForm from '../components/features/SupportForm';
+import FAQSection from '../components/support/FAQSection';
+import ContactForm from '../components/support/ContactForm';
 
-interface FAQ {
-  question: string;
-  answer: string;
-  category: 'booking' | 'payment' | 'general';
-}
-
-const faqs: FAQ[] = [
-  {
-    question: 'How do I book a tour?',
-    answer: 'You can book a tour by selecting your desired route from our Tours page, choosing your dates, and following the simple booking process. We\'ll guide you through each step.',
-    category: 'booking'
-  },
-  {
-    question: 'What payment methods do you accept?',
-    answer: 'We accept all major credit/debit cards, UPI payments, net banking, and international payments through secure payment gateways.',
-    category: 'payment'
-  },
-  {
-    question: 'Can I modify my booking?',
-    answer: 'Yes, you can modify your booking up to 48 hours before the tour start date. Please contact our support team for assistance.',
-    category: 'booking'
-  },
-  {
-    question: 'What is your cancellation policy?',
-    answer: 'We offer full refunds for cancellations made 7 days before the tour date. Cancellations within 3-7 days receive 50% refund. Please check our detailed policy for more information.',
-    category: 'general'
-  },
-  {
-    question: 'Is travel insurance included?',
-    answer: 'Basic travel insurance is included in all our packages. Additional coverage can be purchased separately.',
-    category: 'general'
-  },
-  {
-    question: 'How do I get my booking confirmation?',
-    answer: 'You will receive a booking confirmation email immediately after successful payment. You can also view your booking details in your account.',
-    category: 'booking'
+declare global {
+  interface Window {
+    Tawk_API?: any;
+    Tawk_LoadStart?: any;
   }
-];
-
-const contactInfo = {
-  phone: '+91 98765 43210',
-  email: 'support@hindvitours.com',
-  whatsapp: '+91 98765 43210',
-  hours: '24/7 Customer Support'
-};
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
+      duration: 0.5,
       staggerChildren: 0.1
     }
   }
@@ -80,138 +30,126 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.5
-    }
+    transition: { duration: 0.5 }
   }
 };
 
 export default function Support() {
-  const [activeCategory, setActiveCategory] = useState<'all' | 'booking' | 'payment' | 'general'>('all');
-
-  const filteredFaqs = activeCategory === 'all' 
-    ? faqs 
-    : faqs.filter(faq => faq.category === activeCategory);
+  useEffect(() => {
+    // Initialize Tawk.to
+    var s1 = document.createElement("script");
+    var s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/YOUR_TAWK_TO_ID/default';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    s0.parentNode?.insertBefore(s1, s0);
+  }, []);
 
   return (
     <PageLayout>
-      <main className="py-12">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Hero Section */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">How Can We Help?</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We're here to make your travel experience smooth and enjoyable. Find answers to common questions or reach out to our support team.
+          {/* Header */}
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-6">
+              <FaHeadset className="w-8 h-8 text-indigo-600" />
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              How Can We Help?
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Find answers to common questions or get in touch with our support team.
             </p>
           </motion.div>
 
-          {/* Contact Cards */}
-          <motion.section
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+          {/* Quick Contact Cards */}
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
           >
-            <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600">
-                  <FaPhone className="w-6 h-6" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-semibold">Call Us</h3>
-                  <p className="text-gray-600">{contactInfo.phone}</p>
+            <div className="bg-white rounded-2xl shadow-lg p-8 flex items-start">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <FaPhone className="w-6 h-6 text-green-600" />
                 </div>
               </div>
-            </motion.div>
+              <div className="ml-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  24/7 Phone Support
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Need immediate assistance? Our support team is available round the clock.
+                </p>
+                <a
+                  href="tel:+919876543210"
+                  className="inline-flex items-center text-green-600 hover:text-green-800"
+                >
+                  +91 98765 43210
+                </a>
+              </div>
+            </div>
 
-            <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
-                  <FaWhatsapp className="w-6 h-6" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-semibold">WhatsApp</h3>
-                  <p className="text-gray-600">{contactInfo.whatsapp}</p>
+            <div className="bg-white rounded-2xl shadow-lg p-8 flex items-start">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <FaEnvelope className="w-6 h-6 text-blue-600" />
                 </div>
               </div>
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-                  <FaClock className="w-6 h-6" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-semibold">Support Hours</h3>
-                  <p className="text-gray-600">{contactInfo.hours}</p>
-                </div>
+              <div className="ml-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Email Support
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Send us an email and we'll get back to you within 24 hours.
+                </p>
+                <a
+                  href="mailto:support@hindvitours.com"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800"
+                >
+                  support@hindvitours.com
+                </a>
               </div>
-            </motion.div>
-          </motion.section>
+            </div>
+          </motion.div>
 
           {/* FAQ Section */}
-          <motion.section
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="mb-16"
-          >
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Frequently Asked Questions</h2>
-            
-            {/* Category Filters */}
-            <div className="flex justify-center space-x-4 mb-8">
-              {['all', 'booking', 'payment', 'general'].map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category as any)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeCategory === category
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </button>
-              ))}
+          <motion.section variants={itemVariants} className="mb-16">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-full mb-4">
+                <FaQuestionCircle className="w-6 h-6 text-yellow-600" />
+              </div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-gray-600">
+                Find quick answers to common questions about our services.
+              </p>
             </div>
-
-            {/* FAQ List */}
-            <div className="grid gap-6">
-              {filteredFaqs.map((faq, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6"
-                >
-                  <div className="flex items-start">
-                    <FaQuestionCircle className="w-6 h-6 text-indigo-600 mt-1" />
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{faq.question}</h3>
-                      <p className="text-gray-600">{faq.answer}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <FAQSection />
           </motion.section>
 
           {/* Contact Form Section */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-8 md:p-12"
-          >
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-white mb-8 text-center">Still Have Questions?</h2>
-              <SupportForm />
+          <motion.section variants={itemVariants} className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Get in Touch
+              </h2>
+              <p className="text-gray-600">
+                Can't find what you're looking for? Send us a message and we'll get back to you.
+              </p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              <ContactForm />
             </div>
           </motion.section>
         </div>
-      </main>
+      </motion.div>
     </PageLayout>
   );
 } 

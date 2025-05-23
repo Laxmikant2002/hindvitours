@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { FaQrcode, FaShareAlt } from 'react-icons/fa';
 import QRCode from 'qrcode.react';
 
-export interface BookingDetails {
+export type BookingDetails = {
   bookingId: string;
   tourName: string;
   date: string;
@@ -16,7 +16,7 @@ export interface BookingDetails {
   dropLocation: string;
   departureTime: string;
   duration: string;
-  inclusions: string[];
+  inclusions: readonly string[];
 }
 
 interface ConfirmationDetailsProps {

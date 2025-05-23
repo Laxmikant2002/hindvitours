@@ -1,0 +1,7 @@
+Please add the following image to this directory:
+story-image.jpg - A high-quality image representing Indian tourism/culture:
+- Could be a collage of Indian cultural elements
+- Or a scenic shot of tourists exploring an Indian landmark
+- Minimum 1200x800 pixels
+- Optimized for web
+- In landscape orientation 

@@ -1,0 +1,10 @@
+Please add the following landmark images to this directory:
+1. taj-mahal.jpg - A high-quality image of the Taj Mahal
+2. hawa-mahal.jpg - A high-quality image of the Hawa Mahal
+3. gateway.jpg - A high-quality image of the Gateway of India
+
+The images should be:
+- High resolution (minimum 1200x800 pixels)
+- Optimized for web
+- In landscape orientation
+- Well-lit daytime shots 

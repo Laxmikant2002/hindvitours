@@ -2,168 +2,191 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FaGavel, FaUserShield, FaCar, FaMoneyBillWave, 
+         FaBan, FaStar, FaExclamationTriangle, FaHandshake, 
+         FaEnvelope } from 'react-icons/fa';
 import PageLayout from '../components/ui/PageLayout';
-import { 
-  FaFileContract, 
-  FaMoneyBillWave, 
-  FaBan, 
-  FaShieldAlt,
-  FaUserSecret,
-  FaGavel,
-  FaGlobe,
-  FaExclamationTriangle
-} from 'react-icons/fa';
-
-interface TermsSection {
-  id: string;
-  title: string;
-  content: string;
-  icon: React.ElementType;
-}
-
-const termsSections: TermsSection[] = [
-  {
-    id: 'acceptance',
-    title: 'Acceptance of Terms',
-    content: 'By accessing or using HindviTours services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.',
-    icon: FaFileContract
-  },
-  {
-    id: 'booking',
-    title: 'Booking & Payments',
-    content: 'All bookings are subject to availability. Payment must be made in full at the time of booking. We accept major credit cards and other payment methods as specified on our payment page.',
-    icon: FaMoneyBillWave
-  },
-  {
-    id: 'cancellation',
-    title: 'Cancellation Policy',
-    content: 'Cancellations made 7 days before the tour date are eligible for a full refund. Cancellations within 3-7 days receive a 50% refund. No refunds for cancellations within 72 hours of the tour.',
-    icon: FaBan
-  },
-  {
-    id: 'privacy',
-    title: 'Privacy & Data',
-    content: 'Your privacy is important to us. We collect and process your data in accordance with our Privacy Policy. By using our services, you consent to our data practices.',
-    icon: FaUserSecret
-  },
-  {
-    id: 'liability',
-    title: 'Limitation of Liability',
-    content: 'While we strive to provide accurate information and reliable services, we are not liable for any indirect, incidental, or consequential damages arising from the use of our services.',
-    icon: FaShieldAlt
-  },
-  {
-    id: 'disputes',
-    title: 'Dispute Resolution',
-    content: 'Any disputes arising from these terms will be resolved through arbitration in accordance with Indian law. The arbitration shall take place in New Delhi, India.',
-    icon: FaGavel
-  },
-  {
-    id: 'modifications',
-    title: 'Modifications',
-    content: 'We reserve the right to modify these terms at any time. Continued use of our services after changes constitutes acceptance of the modified terms.',
-    icon: FaGlobe
-  },
-  {
-    id: 'prohibited',
-    title: 'Prohibited Activities',
-    content: 'Users must not engage in any unlawful conduct, interfere with our services, or use our platform for unauthorized commercial purposes.',
-    icon: FaExclamationTriangle
-  }
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
+      duration: 0.5,
       staggerChildren: 0.1
     }
   }
 };
 
-const itemVariants = {
+const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.5
-    }
+    transition: { duration: 0.5 }
   }
 };
 
-export default function Terms() {
-  const lastUpdated = '2024-02-23';
+const termsSection = [
+  {
+    icon: FaHandshake,
+    title: 'Agreement to Terms',
+    content: `By accessing or using HindviTours' services, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access our services.`
+  },
+  {
+    icon: FaCar,
+    title: 'Ride Services',
+    content: `Our services include:
+    • Booking and facilitating taxi rides
+    • Route planning and fare estimation
+    • Driver assignment and tracking
+    • Electronic payment processing
+    
+    Users must provide accurate pickup/drop-off locations and passenger details.`
+  },
+  {
+    icon: FaMoneyBillWave,
+    title: 'Cancellation Policy',
+    content: `Cancellation terms:
+    • Free cancellation up to 24 hours before scheduled pickup
+    • 50% charge for cancellations within 24 hours
+    • Full charge for no-shows or cancellations after driver arrival
+    • Force majeure exceptions may apply
+    
+    Refunds will be processed within 5-7 business days.`
+  },
+  {
+    icon: FaStar,
+    title: 'Rating System',
+    content: `Our rating system:
+    • Both drivers and passengers can rate each trip
+    • Ratings are on a 1-5 star scale
+    • Low-rated users may face account restrictions
+    • False ratings may result in account suspension
+    • Rating appeals can be submitted through support`
+  },
+  {
+    icon: FaUserShield,
+    title: 'User Responsibilities',
+    content: `Users must:
+    • Provide accurate personal information
+    • Maintain appropriate behavior during rides
+    • Follow local transportation laws
+    • Report safety concerns immediately
+    • Respect driver and vehicle guidelines`
+  },
+  {
+    icon: FaBan,
+    title: 'Prohibited Activities',
+    content: `The following are prohibited:
+    • Fraudulent bookings or payments
+    • Harassment of drivers or other users
+    • Damage to vehicles
+    • Sharing accounts with unauthorized users
+    • False reporting of incidents`
+  },
+  {
+    icon: FaExclamationTriangle,
+    title: 'Safety and Security',
+    content: `Safety measures include:
+    • Real-time ride tracking
+    • Emergency assistance button
+    • Driver background verification
+    • Insurance coverage during rides
+    • 24/7 customer support
+    
+    Users must follow safety guidelines provided during rides.`
+  },
+  {
+    icon: FaGavel,
+    title: 'Legal Disclaimers',
+    content: `• We are not liable for indirect damages
+    • Service availability is not guaranteed
+    • Terms may be updated without notice
+    • Governing law is Indian law
+    • Disputes will be resolved through arbitration`
+  }
+];
 
+export default function Terms() {
   return (
     <PageLayout>
-      <main className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12"
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            variants={sectionVariants}
+            className="text-center mb-12"
           >
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">Terms of Service</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Terms of Service
+            </h1>
+            <p className="text-xl text-gray-600">
               Please read these terms carefully before using our services.
-              <br />
-              <span className="text-sm">Last updated: {lastUpdated}</span>
             </p>
           </motion.div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          >
-            {termsSections.map((section) => (
+          <div className="space-y-8">
+            {termsSection.map((section, index) => (
               <motion.div
-                key={section.id}
-                variants={itemVariants}
-                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                key={section.title}
+                variants={sectionVariants}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600">
+                <div className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 mr-4">
                       <section.icon className="w-6 h-6" />
                     </div>
-                  </div>
-                  <div className="ml-4">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                    <h2 className="text-2xl font-semibold text-gray-900">
                       {section.title}
                     </h2>
-                    <p className="text-gray-600 leading-relaxed">
+                  </div>
+                  <div className="prose prose-indigo max-w-none">
+                    <p className="text-gray-600 whitespace-pre-line">
                       {section.content}
                     </p>
                   </div>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-16 text-center"
-          >
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-3xl p-8 md:p-12">
-              <h2 className="text-3xl font-bold mb-4">Need Clarification?</h2>
-              <p className="text-lg mb-8 opacity-90">
-                If you have any questions about our Terms of Service, our support team is here to help.
-              </p>
-              <button
-                onClick={() => window.location.href = '/support'}
-                className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors"
-              >
-                Contact Support
-              </button>
-            </div>
-          </motion.div>
+            <motion.div
+              variants={sectionVariants}
+              className="mt-12 text-center"
+            >
+              <div className="inline-flex items-center justify-center p-6 bg-indigo-50 rounded-2xl">
+                <FaEnvelope className="w-6 h-6 text-indigo-600 mr-3" />
+                <div className="text-left">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Need Help Understanding Our Terms?
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Our support team is here to help clarify any questions about our terms.
+                  </p>
+                  <a
+                    href="/support"
+                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                  >
+                    Contact Support
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={sectionVariants}
+              className="text-center text-sm text-gray-500 mt-8"
+            >
+              <p>Last updated: March 2024</p>
+            </motion.div>
+          </div>
         </div>
-      </main>
+      </motion.div>
     </PageLayout>
   );
 } 

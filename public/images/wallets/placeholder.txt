@@ -1,0 +1,10 @@
+Please add the following wallet logo images to this directory:
+1. paytm.png - Paytm logo
+2. phonepe.png - PhonePe logo
+3. gpay.png - Google Pay logo
+
+The images should be:
+- Square format (1:1 aspect ratio)
+- Minimum 96x96 pixels
+- PNG format with transparency
+- Clear and recognizable 

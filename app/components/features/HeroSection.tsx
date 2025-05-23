@@ -83,15 +83,15 @@ const HeroSection = () => {
     <section className="relative min-h-[85vh] overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/20 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/5 to-purple-600/10 backdrop-blur-sm" />
         <motion.div
           className="absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
         >
-          <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl" />
+          <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/5 rounded-full filter blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/5 rounded-full filter blur-3xl" />
         </motion.div>
       </div>
 
@@ -139,7 +139,7 @@ const HeroSection = () => {
               variants={itemVariants}
               className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4"
             >
-              <Link href="/booking" className="group">
+              <Link href="/routes" className="group">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

@@ -1,20 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { FaCreditCard, FaLock } from 'react-icons/fa';
 import PageLayout from '../components/ui/PageLayout';
-import PaymentForm from '../components/features/PaymentForm';
-import { FaLock, FaShieldAlt, FaCreditCard } from 'react-icons/fa';
+import Script from 'next/script';
 
-// Mock booking data (replace with actual data from your backend)
-const mockBookingDetails = {
-  tourName: 'Delhi to Agra Tour',
-  date: '2024-03-15',
-  passengers: 2,
-  amount: 5998,
-  bookingId: 'BK123456'
-};
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
+interface BookingData {
+  sessionId: string;
+  pickup: string;
+  dropoff: string;
+  rideType: string;
+  fare: number;
+  timestamp: string;
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,135 +37,173 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.5
-    }
+    transition: { duration: 0.5 }
   }
 };
 
-const securityFeatures = [
-  {
-    icon: FaLock,
-    title: 'Secure Payments',
-    description: 'Your payment information is encrypted and processed securely.'
-  },
-  {
-    icon: FaShieldAlt,
-    title: 'Protected Booking',
-    description: 'Your booking is protected by our secure booking guarantee.'
-  },
-  {
-    icon: FaCreditCard,
-    title: 'Safe Transactions',
-    description: 'We use industry-standard security protocols for all transactions.'
-  }
-];
-
 export default function Payment() {
-  const router = useRouter();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [bookingData, setBookingData] = useState<BookingData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const handlePaymentComplete = () => {
-    setIsProcessing(true);
-    // Simulate payment processing
-    setTimeout(() => {
-      router.push('/confirmation');
-    }, 2000);
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookingId = urlParams.get('bookingId');
+
+    if (bookingId) {
+      const storedBooking = localStorage.getItem(bookingId);
+      if (storedBooking) {
+        setBookingData(JSON.parse(storedBooking));
+      } else {
+        setError('Booking not found');
+      }
+    } else {
+      setError('Invalid booking ID');
+    }
+    setLoading(false);
+  }, []);
+
+  const handlePayment = () => {
+    if (!bookingData) return;
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      amount: bookingData.fare * 100, // Amount in paise
+      currency: 'INR',
+      name: 'Hindvi Tours',
+      description: `${bookingData.pickup} to ${bookingData.dropoff} - ${bookingData.rideType}`,
+      image: '/logo.png',
+      handler: function(response: any) {
+        // Handle successful payment
+        const paymentData = {
+          paymentId: response.razorpay_payment_id,
+          bookingData,
+          timestamp: new Date().toISOString()
+        };
+
+        // Store payment data
+        localStorage.setItem(`payment_${paymentData.paymentId}`, JSON.stringify(paymentData));
+
+        // Redirect to confirmation page
+        window.location.href = `/confirmation?paymentId=${paymentData.paymentId}`;
+      },
+      prefill: {
+        name: '',
+        email: '',
+        contact: ''
+      },
+      notes: {
+        sessionId: bookingData.sessionId,
+        pickup: bookingData.pickup,
+        dropoff: bookingData.dropoff
+      },
+      theme: {
+        color: '#4F46E5'
+      }
+    };
+
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
   };
+
+  if (loading) {
+    return (
+      <PageLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div role="status" className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </PageLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">{error}</h2>
+            <button
+              onClick={() => window.location.href = '/booking'}
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+            >
+              Return to Booking
+            </button>
+          </div>
+        </div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout>
-      <main className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="text-center mb-12"
-          >
-            <motion.h1 
-              variants={itemVariants}
-              className="text-4xl font-bold text-gray-900 mb-4"
-            >
-              Secure Payment
-            </motion.h1>
-            <motion.p 
-              variants={itemVariants}
-              className="text-xl text-gray-600 max-w-2xl mx-auto"
-            >
-              Complete your booking securely. Your payment information is protected.
-            </motion.p>
+      <Script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        strategy="lazyOnload"
+      />
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12"
+      >
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-6">
+              <FaCreditCard className="w-8 h-8 text-indigo-600" />
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Complete Your Payment
+            </h1>
+            <p className="text-xl text-gray-600">
+              Secure payment powered by Razorpay
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Payment Form */}
-            <motion.div 
-              variants={itemVariants}
-              className="lg:col-span-2"
-            >
-              <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-                <div className="mb-6">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-2">Booking Details</h2>
-                  <div className="grid grid-cols-2 gap-4 text-gray-600">
-                    <div>
-                      <p className="font-medium">Tour:</p>
-                      <p>{mockBookingDetails.tourName}</p>
-                    </div>
-                    <div>
-                      <p className="font-medium">Date:</p>
-                      <p>{mockBookingDetails.date}</p>
-                    </div>
-                    <div>
-                      <p className="font-medium">Passengers:</p>
-                      <p>{mockBookingDetails.passengers}</p>
-                    </div>
-                    <div>
-                      <p className="font-medium">Booking ID:</p>
-                      <p>{mockBookingDetails.bookingId}</p>
-                    </div>
-                  </div>
+          {/* Booking Summary */}
+          {bookingData && (
+            <motion.div variants={itemVariants} className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Booking Summary</h2>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-500">From</p>
+                  <p className="text-lg text-gray-900">{bookingData.pickup}</p>
                 </div>
-                <PaymentForm 
-                  amount={mockBookingDetails.amount}
-                  onPaymentComplete={handlePaymentComplete}
-                  isProcessing={isProcessing}
-                />
+                <div>
+                  <p className="text-sm text-gray-500">To</p>
+                  <p className="text-lg text-gray-900">{bookingData.dropoff}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Ride Type</p>
+                  <p className="text-lg text-gray-900 capitalize">{bookingData.rideType}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Total Fare</p>
+                  <p className="text-2xl font-bold text-gray-900">₹{bookingData.fare}</p>
+                </div>
               </div>
             </motion.div>
+          )}
 
-            {/* Security Features */}
-            <motion.div 
-              variants={itemVariants}
-              className="space-y-6"
+          {/* Payment Button */}
+          <motion.div variants={itemVariants} className="text-center">
+            <div className="flex items-center justify-center mb-6">
+              <FaLock className="w-5 h-5 text-green-600 mr-2" />
+              <span className="text-sm text-gray-600">
+                256-bit secure payment
+              </span>
+            </div>
+            <button
+              onClick={handlePayment}
+              className="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              {securityFeatures.map((feature, index) => (
-                <div 
-                  key={feature.title}
-                  className="bg-white rounded-xl shadow-md p-6"
-                >
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600">
-                      <feature.icon className="w-6 h-6" />
-                    </div>
-                    <h3 className="ml-4 text-lg font-semibold text-gray-900">
-                      {feature.title}
-                    </h3>
-                  </div>
-                  <p className="text-gray-600">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
-
-              <div className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl p-6">
-                <h3 className="text-lg font-semibold mb-2">Total Amount</h3>
-                <p className="text-3xl font-bold">₹{mockBookingDetails.amount.toLocaleString('en-IN')}</p>
-                <p className="text-sm opacity-90 mt-2">Includes all taxes and fees</p>
-              </div>
-            </motion.div>
-          </div>
+              Pay ₹{bookingData?.fare}
+            </button>
+          </motion.div>
         </div>
-      </main>
+      </motion.div>
     </PageLayout>
   );
 } 
