@@ -62,25 +62,35 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 ## 📁 Project Structure
 
 ```
-app/
-├── components/    # Reusable UI components
-│   ├── BookingForm.jsx
-│   ├── HeroSection.jsx
-│   ├── RouteCard.jsx
-│   └── ...
-├── pages/        # Application routes
-│   ├── about.jsx
-│   ├── booking.jsx
-│   ├── routes_page.jsx
-│   └── ...
-├── styles/       # Global styles and theme
-│   └── theme.js
-└── public/       # Static assets
-    └── images/
+src/
+├── app/                    # Next.js app directory
+│   ├── (routes)/          # All route groups
+│   │   ├── about/         # About page routes
+│   │   ├── booking/       # Booking related routes
+│   │   ├── routes/        # Tour routes pages
+│   │   └── support/       # Support pages
+│   ├── api/               # API routes
+│   │   └── routes/        # API endpoints
+│   └── layout.js          # Root layout
+├── components/            # Reusable UI components
+│   ├── booking/          # Booking related components
+│   ├── common/           # Common/shared components
+│   ├── layout/           # Layout components
+│   └── tours/            # Tour related components
+├── config/               # Configuration files
+│   ├── routes.js        # Route definitions
+│   └── site.js          # Site-wide settings
+├── hooks/               # Custom React hooks
+├── lib/                 # Utility functions and libraries
+│   ├── api/            # API related utilities
+│   └── utils/          # Helper functions
+├── models/             # Data models and types
+├── styles/             # Global styles and CSS modules
+└── types/              # TypeScript type definitions
 
-server/           # Backend server configuration
-├── server.js     # Express server setup
-└── ...
+public/                 # Static assets
+├── images/            # Image assets
+└── icons/             # Icon assets
 ```
 
 ### 🔗 Deployment Status
